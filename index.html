@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build Your First Website — Sharma Computer Academy</title>
+  <meta name="description" content="A beginner-friendly online workshop for college students with no coding experience. Demo page only.">
+  <style>
+    :root {
+      --cream: #fdf6ec;
+      --cream-deep: #f6ead8;
+      --surface: #ffffff;
+      --navy: #1b2a4a;
+      --text: #3a3f4b;
+      --muted: #5f6573;
+      --orange: #e8701a;
+      --orange-dark: #c25a0c;
+      --border: #ead9c0;
+      --error: #b42318;
+      --success: #1f7a3d;
+      --radius: 14px;
+      --max: 1080px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 { color: var(--navy); line-height: 1.2; margin: 0; }
+    p { margin: 0; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      background: var(--navy);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      z-index: 100;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* Demo banner */
+    .demo-banner {
+      background: var(--navy);
+      color: #fff;
+      text-align: center;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 10px 16px;
+    }
+    .demo-banner span { color: #ffc28f; }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(253, 246, 236, 0.94);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 68px;
+    }
+    .brand {
+      font-weight: 800;
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 1.0625rem;
+      letter-spacing: -0.01em;
+    }
+    .brand-mark {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--orange);
+      border-radius: 3px;
+      margin-right: 8px;
+      vertical-align: 1px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 22px;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+    .btn-primary { background: var(--orange); color: #fff; }
+    .btn-primary:hover { background: var(--orange-dark); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-small { min-height: 40px; padding: 0 18px; font-size: 0.9375rem; }
+    .btn-block { width: 100%; }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .section-label {
+      display: inline-block;
+      color: var(--orange-dark);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.625rem, 4vw, 2.25rem);
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+      max-width: 640px;
+    }
+
+    /* Hero */
+    .hero { padding: 88px 0 72px; }
+    .hero h1 {
+      font-size: clamp(2.25rem, 7vw, 3.75rem);
+      letter-spacing: -0.03em;
+      max-width: 760px;
+    }
+    .hero h1 .accent { color: var(--orange); }
+    .hero-intro {
+      margin-top: 20px;
+      font-size: clamp(1.0625rem, 2.2vw, 1.25rem);
+      max-width: 620px;
+      color: var(--muted);
+    }
+    .facts {
+      list-style: none;
+      margin: 36px 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 720px;
+    }
+    .fact {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .fact-label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .fact-value {
+      display: block;
+      margin-top: 2px;
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 1.0625rem;
+    }
+    .hero-cta {
+      margin-top: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px 20px;
+    }
+    .hero-note { font-size: 0.9375rem; color: var(--muted); }
+
+    /* Outcomes */
+    .outcomes { background: var(--cream-deep); }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+    }
+    .card-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #fdebdc;
+      color: var(--orange-dark);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+    .card h3 { font-size: 1.25rem; margin-bottom: 8px; }
+    .card p { color: var(--muted); }
+
+    /* Schedule */
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-width: 760px;
+    }
+    .timeline li {
+      position: relative;
+      padding: 0 0 36px 32px;
+      border-left: 2px solid var(--border);
+      margin-left: 7px;
+    }
+    .timeline li:last-child { padding-bottom: 0; border-left-color: transparent; }
+    .timeline li::before {
+      content: "";
+      position: absolute;
+      left: -9px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 4px var(--cream);
+    }
+    .slot-time {
+      display: block;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--orange-dark);
+    }
+    .timeline h3 { font-size: 1.1875rem; margin: 4px 0 6px; }
+    .timeline p { color: var(--muted); }
+
+    /* FAQ */
+    .faq { background: var(--cream-deep); }
+    .faq-list { max-width: 760px; }
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+    }
+    .faq-item h3 { font-size: 1rem; }
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      background: none;
+      border: 0;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1.0625rem;
+      color: var(--navy);
+      text-align: left;
+      cursor: pointer;
+      border-radius: var(--radius);
+    }
+    .faq-icon {
+      flex-shrink: 0;
+      position: relative;
+      width: 18px;
+      height: 18px;
+    }
+    .faq-icon::before, .faq-icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 18px;
+      height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+      transition: transform 0.2s ease;
+    }
+    .faq-icon::after { transform: rotate(90deg); }
+    .faq-question[aria-expanded="true"] .faq-icon::after { transform: rotate(0deg); }
+    .faq-answer { padding: 0 20px 20px; color: var(--muted); }
+    .faq-answer[hidden] { display: none; }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      font-size: 0.9375rem;
+      color: var(--muted);
+    }
+    .footer .container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer strong { color: var(--navy); }
+
+    /* Modal */
+    .modal {
+      width: min(460px, calc(100% - 32px));
+      max-height: calc(100% - 32px);
+      padding: 0;
+      border: 0;
+      border-radius: 18px;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 24px 60px rgba(27, 42, 74, 0.25);
+    }
+    .modal::backdrop { background: rgba(27, 42, 74, 0.55); }
+    .modal-inner { padding: 28px 24px 24px; }
+    .modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .modal-head h2 { font-size: 1.5rem; letter-spacing: -0.01em; }
+    .modal-close {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      margin: -6px -8px 0 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--navy);
+      font-size: 1.625rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .modal-close:hover { background: var(--cream-deep); }
+    .modal-sub { color: var(--muted); font-size: 0.9375rem; margin-bottom: 18px; }
+    .demo-note {
+      background: #fdebdc;
+      color: var(--orange-dark);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-weight: 600;
+      color: var(--navy);
+      font-size: 0.9375rem;
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 14px;
+      font: inherit;
+      font-size: 1rem; /* 16px avoids iOS zoom on focus */
+      color: var(--text);
+      background: #fff;
+      border: 1.5px solid #d9c7ab;
+      border-radius: 10px;
+    }
+    .field input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232, 112, 26, 0.2); }
+    .field input[aria-invalid="true"] { border-color: var(--error); }
+    .field-error {
+      min-height: 1.4em;
+      margin-top: 4px;
+      font-size: 0.875rem;
+      color: var(--error);
+    }
+
+    .success {
+      text-align: center;
+      padding: 12px 0 4px;
+    }
+    .success-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: #e3f3e8;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+    .success h3 { font-size: 1.375rem; margin-bottom: 8px; }
+    .success p { color: var(--muted); margin-bottom: 20px; }
+
+    /* Larger screens */
+    @media (min-width: 720px) {
+      .container { padding: 0 32px; }
+      section { padding: 104px 0; }
+      .hero { padding: 120px 0 96px; }
+      .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .cards { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .card { padding: 32px 28px; }
+      .modal-inner { padding: 32px; }
+      .footer .container { flex-direction: row; justify-content: space-between; }
+    }
+
+    @media (max-width: 380px) {
+      .brand { font-size: 0.9375rem; }
+      .btn-small { padding: 0 14px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="demo-banner" role="note">
+    <span>Demo only</span> — no real registration or payment.
+  </div>
+
+  <header class="nav">
+    <div class="container">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span>Sharma Computer Academy</a>
+      <button type="button" class="btn btn-primary btn-small" data-open-register>Register</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container">
+        <span class="section-label">Online workshop</span>
+        <h1 id="hero-title">Build Your <span class="accent">First Website</span></h1>
+        <p class="hero-intro">
+          A beginner-friendly workshop for college students with no coding experience.
+          Learn the basics of HTML and CSS, then put them together to build a simple webpage of your own.
+        </p>
+
+        <ul class="facts" aria-label="Workshop details">
+          <li class="fact"><span class="fact-label">Date</span><span class="fact-value">15 November 2026</span></li>
+          <li class="fact"><span class="fact-label">Time</span><span class="fact-value">10 AM–1 PM IST</span></li>
+          <li class="fact"><span class="fact-label">Mode</span><span class="fact-value">Online</span></li>
+          <li class="fact"><span class="fact-label">Fee</span><span class="fact-value">₹499</span></li>
+        </ul>
+
+        <div class="hero-cta">
+          <button type="button" class="btn btn-primary" data-open-register>Register now</button>
+          <p class="hero-note">Demo only — no real registration or payment.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="outcomes" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="container">
+        <span class="section-label">What you’ll learn</span>
+        <h2 class="section-title" id="outcomes-title">Three skills to get you started</h2>
+        <div class="cards">
+          <article class="card">
+            <span class="card-num" aria-hidden="true">1</span>
+            <h3>HTML basics</h3>
+            <p>Understand how a webpage is structured and write headings, paragraphs, links and images with HTML.</p>
+          </article>
+          <article class="card">
+            <span class="card-num" aria-hidden="true">2</span>
+            <h3>CSS styling</h3>
+            <p>Use CSS to control colours, fonts, spacing and layout so your page looks clean and readable.</p>
+          </article>
+          <article class="card">
+            <span class="card-num" aria-hidden="true">3</span>
+            <h3>Building a simple webpage</h3>
+            <p>Combine HTML and CSS to create a complete, simple webpage from start to finish.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="schedule" id="schedule" aria-labelledby="schedule-title">
+      <div class="container">
+        <span class="section-label">Schedule</span>
+        <h2 class="section-title" id="schedule-title">How the three hours are planned</h2>
+        <ol class="timeline">
+          <li>
+            <span class="slot-time">10:00 – 11:00 AM IST</span>
+            <h3>Part 1: HTML basics</h3>
+            <p>What a webpage is made of, and writing your first HTML elements.</p>
+          </li>
+          <li>
+            <span class="slot-time">11:00 AM – 12:00 PM IST</span>
+            <h3>Part 2: CSS styling</h3>
+            <p>Adding colour, typography and spacing to your HTML with CSS.</p>
+          </li>
+          <li>
+            <span class="slot-time">12:00 – 1:00 PM IST</span>
+            <h3>Part 3: Build a simple webpage</h3>
+            <p>Putting HTML and CSS together to build your own simple webpage.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title" id="faq-title">Frequently asked questions</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3>
+              <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+                Do I need any coding experience?
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
+              <p>No. This workshop is designed for college students with no coding experience.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <h3>
+              <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+                When and where does the workshop take place?
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+              <p>It runs online on 15 November 2026, from 10 AM to 1 PM IST.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <h3>
+              <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+                How much does it cost?
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+              <p>The workshop fee is ₹499.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <h3>
+              <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+                Is this a real registration?
+                <span class="faq-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="faq-answer" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
+              <p>No. This page is a testing prototype. No real registration or payment takes place, and the details you enter are kept in page memory only — they are not saved or sent anywhere.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p><strong>Sharma Computer Academy</strong> · Build Your First Website</p>
+      <p>Demo only — no real registration or payment.</p>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="register-modal" aria-labelledby="modal-title">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <h2 id="modal-title">Register</h2>
+        <button type="button" class="modal-close" data-close-register aria-label="Close registration form">&times;</button>
+      </div>
+
+      <div id="form-view">
+        <p class="modal-sub">Build Your First Website · 15 November 2026 · ₹499</p>
+        <p class="demo-note">Demo only — no real registration or payment. Your details stay in this page and are not saved or sent.</p>
+
+        <form id="register-form" novalidate>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" autocomplete="name" aria-describedby="name-error">
+            <p class="field-error" id="name-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" aria-describedby="email-error">
+            <p class="field-error" id="email-error" aria-live="polite"></p>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Complete registration</button>
+        </form>
+      </div>
+
+      <div id="success-view" class="success" hidden>
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <h3 id="success-title" tabindex="-1">Demo registration complete.</h3>
+        <p>No real registration or payment was made.</p>
+        <button type="button" class="btn btn-primary btn-block" data-close-register>Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ---------- FAQ ----------
+      document.querySelectorAll('.faq-question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          document.getElementById(btn.getAttribute('aria-controls')).hidden = expanded;
+        });
+      });
+
+      // ---------- Registration modal ----------
+      var modal = document.getElementById('register-modal');
+      var form = document.getElementById('register-form');
+      var formView = document.getElementById('form-view');
+      var successView = document.getElementById('success-view');
+      var nameInput = document.getElementById('name');
+      var emailInput = document.getElementById('email');
+      var lastTrigger = null;
+
+      // Form data lives only in this variable; it is never stored or transmitted.
+      var registration = null;
+
+      var EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      function setError(input, message) {
+        var error = document.getElementById(input.id + '-error');
+        error.textContent = message;
+        if (message) {
+          input.setAttribute('aria-invalid', 'true');
+        } else {
+          input.removeAttribute('aria-invalid');
+        }
+      }
+
+      function validateName() {
+        var value = nameInput.value.trim();
+        setError(nameInput, value ? '' : 'Please enter your name.');
+        return Boolean(value);
+      }
+
+      function validateEmail() {
+        var value = emailInput.value.trim();
+        if (!value) {
+          setError(emailInput, 'Please enter your email address.');
+          return false;
+        }
+        if (!EMAIL_PATTERN.test(value)) {
+          setError(emailInput, 'Please enter a valid email address, e.g. name@example.com.');
+          return false;
+        }
+        setError(emailInput, '');
+        return true;
+      }
+
+      function resetModal() {
+        form.reset();
+        setError(nameInput, '');
+        setError(emailInput, '');
+        formView.hidden = false;
+        successView.hidden = true;
+      }
+
+      function openModal(trigger) {
+        lastTrigger = trigger || null;
+        resetModal();
+        if (typeof modal.showModal === 'function') {
+          modal.showModal();
+        } else {
+          modal.setAttribute('open', '');
+        }
+        nameInput.focus();
+      }
+
+      function closeModal() {
+        if (typeof modal.close === 'function') {
+          modal.close();
+        } else {
+          modal.removeAttribute('open');
+          onClosed();
+        }
+      }
+
+      function onClosed() {
+        resetModal();
+        if (lastTrigger) lastTrigger.focus();
+      }
+
+      document.querySelectorAll('[data-open-register]').forEach(function (btn) {
+        btn.addEventListener('click', function () { openModal(btn); });
+      });
+
+      document.querySelectorAll('[data-close-register]').forEach(function (btn) {
+        btn.addEventListener('click', closeModal);
+      });
+
+      // Escape key is handled natively by <dialog>; restore state on any close.
+      modal.addEventListener('close', onClosed);
+
+      // Close when clicking the backdrop (outside the dialog box).
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) closeModal();
+      });
+
+      // Clear a field's error once the user corrects it.
+      nameInput.addEventListener('input', function () {
+        if (nameInput.getAttribute('aria-invalid') === 'true') validateName();
+      });
+      emailInput.addEventListener('input', function () {
+        if (emailInput.getAttribute('aria-invalid') === 'true') validateEmail();
+      });
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var nameOk = validateName();
+        var emailOk = validateEmail();
+
+        if (!nameOk || !emailOk) {
+          (nameOk ? emailInput : nameInput).focus();
+          return;
+        }
+
+        registration = { name: nameInput.value.trim(), email: emailInput.value.trim() };
+
+        formView.hidden = true;
+        successView.hidden = false;
+        document.getElementById('success-title').focus();
+      });
+    })();
+  </script>
+</body>
+</html>
